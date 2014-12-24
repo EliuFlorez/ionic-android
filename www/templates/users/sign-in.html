@@ -1,0 +1,18 @@
+<ion-view view-title="Sign-In" title="SignIn">
+	<ion-content ng-controller="UsersCtrl">
+		<div class="list">
+			<label class="item item-input">
+				<span class="input-label">Email</span>
+				<input type="text" ng-model="email">
+			</label>
+			<label class="item item-input">
+				<span class="input-label">Password</span>
+				<input type="password" ng-model="password">
+			</label>
+		</div>
+		<div class="padding">
+			<button class="button button-block button-positive" ng-click="signIn()">Sign-In</button>
+			<p class="text-center"><a href="#/password/remind">Forgot password</a></p>
+		</div>
+	</ion-content>
+</ion-view>

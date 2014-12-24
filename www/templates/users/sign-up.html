@@ -1,0 +1,26 @@
+<ion-view view-title="Sign-In" title="SignUp">
+	<ion-content ng-controller="UsersCtrl">
+		<div class="list">
+			<label class="item item-input">
+				<span class="input-label">Name</span>
+				<input type="text" ng-model="name">
+			</label>
+			<label class="item item-input">
+				<span class="input-label">Email</span>
+				<input type="text" ng-model="email">
+			</label>
+			<label class="item item-input">
+				<span class="input-label">Password</span>
+				<input type="password" ng-model="password">
+			</label>
+			<label class="item item-input">
+				<span class="input-label">Password Confirmation</span>
+				<input type="password" ng-model="password_confirmation">
+			</label>
+		</div>
+		<div class="padding">
+			<button class="button button-block button-positive" ng-click="signUp()">Sign-Up</button>
+			<p class="text-center"><a href="#/sign-in">Sign In</a></p>
+		</div>
+	</ion-content>
+</ion-view>
