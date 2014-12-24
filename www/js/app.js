@@ -31,7 +31,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 			$rootScope.authenticated = false;
 		}
 		
-		console.log('-- authenticated success: '+$rootScope.authenticated+' --');
+		console.log('-- authenticated success: '+$rootScope.authenticated+' --', $localstorage.getObject('auth'));
 	});
 	
 	$rootScope.$on('$stateChangeSuccess', function() {

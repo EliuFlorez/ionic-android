@@ -102,7 +102,6 @@ angular.module('ionic.utils', []).factory('$localstorage', ['$window', function(
 }])
 .factory('iMessage', ['$rootScope', '$ionicPopup', '$timeout', function($rootScope, $ionicPopup, $timeout) {
 	return {
-		/*
 		show: function(title, subTitle, template) {
 			$rootScope.input = '';
 			$ionicPopup.show({
@@ -133,7 +132,6 @@ angular.module('ionic.utils', []).factory('$localstorage', ['$window', function(
 				$ionicPopup.close();
 			}, 3000);
 		},
-		*/
 		alert: function(title, messageData) {			
 			if (typeof messageData === 'object') {
 				var messageAll = '';

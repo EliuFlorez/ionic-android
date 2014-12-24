@@ -42,7 +42,7 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 			}
 			
 			// Session Storage
-			$localstorage.setObject('auth', result.data);
+			$localstorage.setObject('auth', result.data.data);
 			
 			// Loading Hide
 			$ionicLoading.hide();
@@ -282,27 +282,17 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 	
 	// Logout
 	$scope.logout = function() {
-		
-		// Defer
-		var q = $q.defer();
-		
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// Session Destroy
-		$localstorage.clear();
+		$localstorage.setObject('auth', null);
 		
 		// Loading Hide
 		$ionicLoading.hide();
 		
-		// Resolve
-		q.resolve(result);
-		
 		// State - Home
 		$state.go('signin');
-		
-		// Promise
-		return q.promise;
 	};
 	
 }])
