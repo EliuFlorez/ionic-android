@@ -46,83 +46,29 @@ angular.module('starter.services', [])
 	
 	// HTTP Methods
 	return {
-		all : function(endpoint) {
+		all: function(endpoint) {
 			return $http.get('http://hellosociets.com/api/' + endpoint, {
-				headers : {}
+				headers: {}
 			});
 		},
-		get : function(endpoint, id) {
+		get: function(endpoint, id) {
 			return $http.get('http://hellosociets.com/api/' + endpoint + '/' + id, {
-				headers : {}
+				headers: {}
 			});
 		},
-		post : function(endpoint, data) {
+		post: function(endpoint, data) {
 			return $http.post('http://hellosociets.com/api/' + endpoint, data, {
-				headers : {'Content-Type' : 'application/json'}
+				headers: {'Content-Type' : 'application/json'}
 			})
 		},
-		put : function(endpoint, id, data) {
+		put: function(endpoint, id, data) {
 			return $http.put('http://hellosociets.com/api/' + endpoint + '/' + id, data, {
-				headers : {'Content-Type' : 'application/json'}
+				headers: {'Content-Type' : 'application/json'}
 			});
 		},
-		delete : function(endpoint, id) {
+		delete: function(endpoint, id) {
 			return $http.delete('http://hellosociets.com/api/' + endpoint + '/' + id, {
-				headers : {'Content-Type' : 'application/json'}
-			});
-		}
-	}
-}])
-.factory('Message', ['$scope', '$ionicPopup', '$timeout', function($scope, $ionicPopup, $timeout) {
-	return {
-		show : function(title, subTitle, template) {
-			$scope.data = {};
-			$ionicPopup.show({
-				title: title,
-				subTitle: subTitle,
-				template: '<input type="password" ng-model="data.input">',
-				scope: $scope,
-				buttons: [
-					{text: 'Cancel'},
-					{
-						text: '<b>Save</b>',
-						type: 'button-positive',
-						onTap: function(e) {
-							if (!$scope.data.input) {
-								e.preventDefault();
-							} else {
-								return $scope.data.input;
-							}
-						}
-					}
-				]
-			}).then(function(res) {
-				console.log('Tapped!', res);
-			});
-			
-			// Closed
-			$timeout(function() {
-				$ionicPopup.close();
-			}, 3000);
-		},
-		alert : function(title, template) {
-			$ionicPopup.alert({
-				title: title,
-				template: template
-			}).then(function(res) {
-				console.log('Thank you for not eating my delicious ice cream cone');
-			});
-		},
-		confirm : function(title, template) {
-			$ionicPopup.confirm({
-				title: title,
-				template: template
-			}).then(function(res) {
-				if (res) {
-					return true;
-				} else {
-					return false;
-				}
+				headers: {'Content-Type' : 'application/json'}
 			});
 		}
 	}
@@ -144,13 +90,84 @@ angular.module('ionic.utils', []).factory('$localstorage', ['$window', function(
 		},
 		getObject: function(key) {
 			if (typeof $window.localStorage[key] !== 'undefined') {
-				return JSON.parse($window.localStorage[key] || "{}");
+				return JSON.parse($window.localStorage[key]);
 			} else {
 				return JSON.parse("{}");
 			}
 		},
 		clear : function() {
 			$window.localStorage.clear();
+		}
+	}
+}])
+.factory('iMessage', ['$rootScope', '$ionicPopup', '$timeout', function($rootScope, $ionicPopup, $timeout) {
+	return {
+		/*
+		show: function(title, subTitle, template) {
+			$rootScope.input = '';
+			$ionicPopup.show({
+				title: title,
+				subTitle: subTitle,
+				template: '<input type="password" ng-model="input">',
+				scope: $rootScope,
+				buttons: [
+					{text: 'Cancel'},
+					{
+						text: '<b>Save</b>',
+						type: 'button-positive',
+						onTap: function(e) {
+							if (!$rootScope.input) {
+								e.preventDefault();
+							} else {
+								return $rootScope.input;
+							}
+						}
+					}
+				]
+			}).then(function(res) {
+				console.log('Tapped!', res);
+			});
+			
+			// Closed
+			$timeout(function() {
+				$ionicPopup.close();
+			}, 3000);
+		},
+		*/
+		alert: function(title, messageData) {			
+			if (typeof messageData === 'object') {
+				var messageAll = '';
+				angular.forEach(messageData, function(value) {
+					if (typeof value === 'object') {
+						angular.forEach(value, function(val) {
+							messageAll += '-'+val+'</br>';
+						});
+					} else {
+						messageAll += '-'+val+'</br>';
+					}
+				});
+				$ionicPopup.alert({
+					title : 'Error!',
+					template : messageAll
+				});
+			} else {
+				$ionicPopup.alert({
+					title : 'Error!',
+					template : messageData
+				});
+			}
+		},
+		confirm: function(title, template) {
+			$ionicPopup.confirm({
+				title: title,
+				template: template
+			}).then(function(res) {
+				if (res) {
+					return true;
+				} else {
+					return false;
+				}
+			});
 		}
 	}
 }]);

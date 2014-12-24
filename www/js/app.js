@@ -23,9 +23,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 	// on state change you want to check whether or not the state.
 	// I'm trying to reach is protected 
 	$rootScope.$on('$stateChangeStart', function() {
-		$ionicLoading.show({
-			template: 'Loading...'
-		});
+		$ionicLoading.show({template: 'Loading...'});
 		
 		if ($localstorage.getObject('auth')) {
 			$rootScope.authenticated = true;
@@ -42,8 +40,43 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 	
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+// Http Interceptor
+.factory("HttpErrorInterceptorModule", ["$q", "$rootScope", "$location", function($q, $rootScope, $location) {
+	var success = function(response) {
+		// pass through
+		console.log('success in interceptor');
+		return response;
+	},
+	error = function(response) {
+		console.log('error in interceptor');
+		console.log(response);
+		angular.forEach(response.data, function(value, key) {
+			console.log('-- log responses: '+key+' - '+value+' --');
+			console.log('-- log values: ', value);
+		});
+		if(response.status === 401) {
+			// dostuff
+			response.data = { 
+				status: false, 
+				description: 'Authentication required!'
+			};
+			console.log("Response Error 401", response);
+			$location.path('/login').search('returnTo', $location.path());
+			return response;
+		}
+		return $q.reject(response);
+	};
 
+	return function(httpPromise) {
+		return httpPromise.then(success, error);
+	};
+}])
+
+.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+
+	// http Error
+	$httpProvider.responseInterceptors.push("HttpErrorInterceptorModule");
+	
 	// Ionic uses AngularUI Router which uses the concept of states
 	// Learn more here: https://github.com/angular-ui/ui-router
 	// Set up the various states which the app can be in.

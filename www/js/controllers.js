@@ -14,9 +14,10 @@ angular.module('starter.controllers', [])
 	'$ionicLoading', 
 	'$localstorage', 
 	'Api', 
-	function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api) {
+	'iMessage',
+function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMessage) {
 	
-	// Profile
+	// Profile - Auth
 	$scope.profile = $localstorage.getObject('auth');
 	
 	// Sign-In
@@ -26,26 +27,18 @@ angular.module('starter.controllers', [])
 		
 		// Users Data
 		var users = {
-			email : $scope.email,
-			password : $scope.password
+			email: $scope.email,
+			password: $scope.password
 		};
 		
 		// Loading Show
-		$ionicLoading.show({
-			template: 'Loading...'
-		});
-		
-		// Console Log
-		console.log('Sign-In - Request', users);
+		$ionicLoading.show({template: 'Loading...'});
 		
 		// SignIn
 		Api.post('users/signin', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
-				$ionicPopup.alert({
-					title : 'Success!',
-					template : 'Bienvenido a iNomic!'
-				});
+				iMessage.alert('Success!', 'Bienvenido a iNomic!');
 			}
 			
 			// Session Storage
@@ -64,30 +57,9 @@ angular.module('starter.controllers', [])
 			$state.go('app.home');
 		}, function (error) {
 			// Error
-			if (error.data != null) {
+			if (error.data.success == false) {
 				if (error.data.message) { 
-					var message = error.data.message;
-					if (typeof message === 'object') {
-						var messageAll = '';
-						angular.forEach(message, function(value) {
-							if (typeof value === 'object') {
-								angular.forEach(value, function(val) {
-									messageAll += '-'+val+'</br>';
-								});
-							} else {
-								messageAll += '-'+val+'</br>';
-							}
-						});
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : messageAll
-						});
-					} else {
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : message
-						});
-					}
+					iMessage.alert('Error!', error.data.message);
 				}
 			}
 			
@@ -112,28 +84,20 @@ angular.module('starter.controllers', [])
 		
 		// Users Data
 		var users = {
-			name : $scope.name,
-			email : $scope.email,
-			password : $scope.password,
-			password_confirmation : $scope.password_confirmation
+			name: $scope.name,
+			email: $scope.email,
+			password: $scope.password,
+			password_confirmation: $scope.password_confirmation
 		};
 		
 		// Loading Show
-		$ionicLoading.show({
-			template: 'Loading...'
-		});
-		
-		// Console Log
-		console.log('Sign-Up - Request', users);
+		$ionicLoading.show({template: 'Loading...'});
 		
 		// SignIn
 		Api.post('users/signup', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
-				$ionicPopup.alert({
-					title : 'Success!',
-					template : result.data.message
-				});
+				iMessage.alert('Success!', result.data.message);
 			}
 			
 			// Loading Hide
@@ -146,30 +110,9 @@ angular.module('starter.controllers', [])
 			$state.go('signin');
 		}, function (error) {
 			// Error
-			if (error.data != null) {
+			if (error.data.success == false) {
 				if (error.data.message) { 
-					var message = error.data.message;
-					if (typeof message === 'object') {
-						var messageAll = '';
-						angular.forEach(message, function(value) {
-							if (typeof value === 'object') {
-								angular.forEach(value, function(val) {
-									messageAll += '-'+val+'</br>';
-								});
-							} else {
-								messageAll += '-'+value+'</br>';
-							}
-						});
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : messageAll
-						});
-					} else {
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : message
-						});
-					}
+					iMessage.alert('Error!', error.data.message);
 				}
 			}
 			
@@ -187,6 +130,59 @@ angular.module('starter.controllers', [])
 		return q.promise;
 	};
 	
+	// Setting
+	$scope.setting = function() {
+		// Defer
+		var q = $q.defer();
+		
+		// Users Data
+		var users = {
+			name: $scope.name,
+			email: $scope.email,
+			password: $scope.password,
+			password_confirmation: $scope.password_confirmation
+		};
+		
+		// Loading Show
+		$ionicLoading.show({template: 'Loading...'});
+		
+		// SignIn
+		Api.post('users/setting', users).then(function (result) {
+			// Success
+			if (result.data.success == true) {
+				iMessage.alert('Success!', result.data.message);
+			}
+			
+			// Loading Hide
+			$ionicLoading.hide();
+			
+			// Resolve
+			q.resolve(result);
+			
+			// State - Setting
+			$state.go('app.setting');
+		}, function (error) {
+			// Error
+			if (error.data.success == false) {
+				if (error.data.message) { 
+					iMessage.alert('Error!', error.data.message);
+				}
+			}
+			
+			// Loading Hide
+			$ionicLoading.hide();
+			
+			// Console Log
+			console.log('Setting - Error', error);
+			
+			// Reject
+			q.reject(error);
+		});
+		
+		// Promise
+		return q.promise;
+	};
+	
 	// Password-Remind
 	$scope.passwordRemind = function() {
 		// Defer
@@ -194,25 +190,17 @@ angular.module('starter.controllers', [])
 		
 		// Users Data
 		var users = {
-			email : $scope.mail
+			email: $scope.mail
 		};
 		
 		// Loading Show
-		$ionicLoading.show({
-			template: 'Loading...'
-		});
-		
-		// Console Log
-		console.log('Password-Remind - Request', users);
+		$ionicLoading.show({template: 'Loading...'});
 		
 		// SignIn
 		Api.post('password/remind', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
-				$ionicPopup.alert({
-					title : 'Success!',
-					template : result.data.message
-				});
+				iMessage.alert('Success!', result.data.message);
 			}
 			
 			// Loading Hide
@@ -222,30 +210,9 @@ angular.module('starter.controllers', [])
 			q.resolve(result);
 		}, function (error) {
 			// Error
-			if (error.data != null) {
+			if (error.data.success == false) {
 				if (error.data.message) { 
-					var message = error.data.message;
-					if (typeof message === 'object') {
-						var messageAll = '';
-						angular.forEach(message, function(value) {
-							if (typeof value === 'object') {
-								angular.forEach(value, function(val) {
-									messageAll += '-'+val+'</br>';
-								});
-							} else {
-								messageAll += '-'+val+'</br>';
-							}
-						});
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : messageAll
-						});
-					} else {
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : message
-						});
-					}
+					iMessage.alert('Error!', error.data.message);
 				}
 			}
 			
@@ -270,28 +237,20 @@ angular.module('starter.controllers', [])
 		
 		// Users Data
 		var users = {
-			token : $scope.token,
-			email : $scope.email,
-			password : $scope.password,
-			password_confirmation : $scope.password_confirmation
+			token: $scope.token,
+			email: $scope.email,
+			password: $scope.password,
+			password_confirmation: $scope.password_confirmation
 		};
 		
 		// Loading Show
-		$ionicLoading.show({
-			template: 'Loading...'
-		});
-		
-		// Console Log
-		console.log('Password-Reset - Request', users);
+		$ionicLoading.show({template: 'Loading...'});
 		
 		// PasswordReset
 		Api.post('password/reset', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
-				$ionicPopup.alert({
-					title : 'Success!',
-					template : result.data.message
-				});
+				iMessage.alert('Success!', result.data.message);
 			}
 			
 			// Loading Hide
@@ -301,30 +260,9 @@ angular.module('starter.controllers', [])
 			q.resolve(result);
 		}, function (error) {
 			// Error
-			if (error.data != null) {
+			if (error.data.success == false) {
 				if (error.data.message) { 
-					var message = error.data.message;
-					if (typeof message === 'object') {
-						var messageAll = '';
-						angular.forEach(message, function(value) {
-							if (typeof value === 'object') {
-								angular.forEach(value, function(val) {
-									messageAll += '-'+val+'</br>';
-								});
-							} else {
-								messageAll += '-'+val+'</br>';
-							}
-						});
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : messageAll
-						});
-					} else {
-						$ionicPopup.alert({
-							title : 'Error!',
-							template : message
-						});
-					}
+					iMessage.alert('Error!', error.data.message);
 				}
 			}
 			
@@ -349,9 +287,7 @@ angular.module('starter.controllers', [])
 		var q = $q.defer();
 		
 		// Loading Show
-		$ionicLoading.show({
-			template: 'Loading...'
-		});
+		$ionicLoading.show({template: 'Loading...'});
 		
 		// Session Destroy
 		$localstorage.clear();
