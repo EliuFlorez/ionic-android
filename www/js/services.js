@@ -27,10 +27,10 @@ angular.module('starter.services', [])
 .factory('urlBase', function() {
 	return 'http://hellosociets.com/api/';
 })
-.factory('Api', ['$http', '$localstorage', '$ionicLoading', 'urlBase', function($http, $localstorage, $ionicLoading, urlBase) {
+.factory('iApi', ['$http', '$iStorage', '$ionicLoading', 'urlBase', function($http, $iStorage, $ionicLoading, urlBase) {
 	
 	// User Auth
-	var auth = $localstorage.getObject('auth');
+	var auth = $iStorage.getObject('auth');
 	
 	// HTTP Headers Auth
 	if (auth) {
@@ -77,7 +77,7 @@ angular.module('starter.services', [])
 /**
  * Local Storage
  */
-angular.module('ionic.utils', []).factory('$localstorage', ['$window', function($window) {
+angular.module('ionic.utils', []).factory('$iStorage', ['$window', function($window) {
 	return {
 		set: function(key, value) {
 			$window.localStorage[key] = value;
@@ -92,7 +92,7 @@ angular.module('ionic.utils', []).factory('$localstorage', ['$window', function(
 			if (typeof $window.localStorage[key] !== 'undefined') {
 				return JSON.parse($window.localStorage[key]);
 			} else {
-				return JSON.parse("{}");
+				return null;
 			}
 		},
 		clear : function() {

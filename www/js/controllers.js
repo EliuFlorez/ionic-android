@@ -12,13 +12,13 @@ angular.module('starter.controllers', [])
 	'$state',
 	'$ionicPopup', 
 	'$ionicLoading', 
-	'$localstorage', 
-	'Api', 
+	'$iStorage', 
+	'iApi', 
 	'iMessage',
-function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMessage) {
+function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessage) {
 	
 	// Profile - Auth
-	$scope.profile = $localstorage.getObject('auth');
+	$scope.profile = $iStorage.getObject('auth');
 	
 	// Sign-In
 	$scope.signIn = function() {
@@ -35,20 +35,20 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// SignIn
-		Api.post('users/signin', users).then(function (result) {
+		iApi.post('users/signin', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', 'Bienvenido a iNomic!');
 			}
 			
 			// Session Storage
-			$localstorage.setObject('auth', result.data.data);
+			$iStorage.setObject('auth', result.data.data);
 			
 			// Loading Hide
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Sign-In - Response', $localstorage.getObject('auth'));
+			console.log('Sign-In - Response', $iStorage.getObject('auth'));
 			
 			// Resolve
 			q.resolve(result);
@@ -94,7 +94,7 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// SignIn
-		Api.post('users/signup', users).then(function (result) {
+		iApi.post('users/signup', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', result.data.message);
@@ -131,23 +131,15 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 	};
 	
 	// Setting
-	$scope.setting = function() {
+	$scope.setting = function(profile) {
 		// Defer
 		var q = $q.defer();
-		
-		// Users Data
-		var users = {
-			name: $scope.name,
-			email: $scope.email,
-			password: $scope.password,
-			password_confirmation: $scope.password_confirmation
-		};
 		
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// SignIn
-		Api.post('users/setting', users).then(function (result) {
+		iApi.post('users/setting', profile).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', result.data.message);
@@ -197,7 +189,7 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// SignIn
-		Api.post('password/remind', users).then(function (result) {
+		iApi.post('password/remind', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', result.data.message);
@@ -247,7 +239,7 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// PasswordReset
-		Api.post('password/reset', users).then(function (result) {
+		iApi.post('password/reset', users).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', result.data.message);
@@ -286,7 +278,7 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $localstorage, Api, iMe
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// Session Destroy
-		$localstorage.setObject('auth', null);
+		$iStorage.setObject('auth', null);
 		
 		// Loading Hide
 		$ionicLoading.hide();

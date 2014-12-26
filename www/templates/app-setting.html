@@ -11,15 +11,15 @@
 			</label>
 			<label class="item item-input">
 				<span class="input-label">Password</span>
-				<input type="password" ng-model="password">
+				<input type="password" ng-model="profile.password">
 			</label>
 			<label class="item item-input">
 				<span class="input-label">Password Confirmation</span>
-				<input type="password" ng-model="password_confirmation">
+				<input type="password" ng-model="profile.password_confirmation">
 			</label>
 		</div>
 		<div class="padding">
-			<button class="button button-block button-positive" ng-click="signUp()">Update</button>
+			<button class="button button-block button-positive" ng-click="setting(profile)">Update</button>
 			<button class="button button-block button-positive" ng-click="logout()">Logout</button>
 		</div>
 		<p>.</p>

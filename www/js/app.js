@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform, $state, $rootScope, $ionicLoading, $localstorage) {
+.run(function($ionicPlatform, $rootScope, $state, $ionicLoading, $iStorage) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -22,21 +22,29 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 	
 	// on state change you want to check whether or not the state.
 	// I'm trying to reach is protected 
-	$rootScope.$on('$stateChangeStart', function() {
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 		$ionicLoading.show({template: 'Loading...'});
 		
-		if ($localstorage.getObject('auth')) {
-			$rootScope.authenticated = true;
+		if (toState.authenticated === true && $localstorage.getObject('auth') !== null) {
+			$rootScope.authenticate = true;
 		} else {
-			$rootScope.authenticated = false;
+			$rootScope.authenticate = false;
+			//$state.transitionTo('signin');
 		}
 		
-		console.log('-- authenticated success: '+$rootScope.authenticated+' --', $localstorage.getObject('auth'));
+		console.log('-- authenticated success: '+$rootScope.authenticate+' --', $iStorage.getObject('auth'));
 	});
 	
-	$rootScope.$on('$stateChangeSuccess', function() {
+	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 		$ionicLoading.hide();
+		event.preventDefault();
 	});
+	
+	$rootScope.$on('$routeChangeError', function(event, toState, toParams, fromState, fromParams) {
+        if (toState.authenticated === false) {
+            $state.transitionTo('signin');
+        }
+    });
 	
 })
 
@@ -87,35 +95,40 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 	.state('signin', {
 		url: '/sign-in',
 		templateUrl: 'templates/users/sign-in.html',
-		controller: 'UsersCtrl'
+		controller: 'UsersCtrl',
+		authenticated: false
 	})
 	
 	// Users - Sign-Up
 	.state('signup', {
 		url: '/sign-up',
 		templateUrl: 'templates/users/sign-up.html',
-		controller: 'UsersCtrl'
+		controller: 'UsersCtrl',
+		authenticated: false
 	})
 	
 	// Users - Password Remind
 	.state('remind', {
 		url: '/password/remind',
 		templateUrl: 'templates/users/password-remind.html',
-		controller: 'UsersCtrl'
+		controller: 'UsersCtrl',
+		authenticated: false
 	})
 	
 	// Users - Password Reset
 	.state('reset', {
 		url: '/password/reset',
 		templateUrl: 'templates/users/password-reset.html',
-		controller: 'UsersCtrl'
+		controller: 'UsersCtrl',
+		authenticated: false
 	})
 	
 	// setup an abstract state for the app directive
 	.state('app', {
 		url: '/app',
 		abstract: true,
-		templateUrl: 'templates/app.html'
+		templateUrl: 'templates/app.html',
+		authenticated: true
 	})
 
 	// Each app has its own nav history stack:
@@ -126,7 +139,8 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 				templateUrl: 'templates/app-home.html',
 				controller: 'DashCtrl'
 			}
-		}
+		},
+		authenticated: true
 	})
 	.state('app.friends', {
 		url: '/friends',
@@ -135,7 +149,8 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 				templateUrl: 'templates/app-friends.html',
 				controller: 'FriendsCtrl'
 			}
-		}
+		},
+		authenticated: true
 	})
 	.state('app.friend-detail', {
 		url: '/friend/:friendId',
@@ -144,16 +159,18 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 				templateUrl: 'templates/friend-detail.html',
 				controller: 'FriendDetailCtrl'
 			}
-		}
+		},
+		authenticated: true
 	})
 	.state('app.setting', {
 		url: '/setting',
 		views: {
 			'app-setting': {
 				templateUrl: 'templates/app-setting.html',
-				controller: 'UsersCtrl'
+				controller: 'UsersCtrl'	
 			}
-		}
+		},
+		authenticated: true
 	})
 	.state('app.logout', {
 		url: '/logout',
