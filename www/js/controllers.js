@@ -138,6 +138,8 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
+		console.log('profile - data: ', profile);
+		
 		// SignIn
 		iApi.post('users/setting', profile).then(function (result) {
 			// Success
@@ -290,7 +292,7 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 }])
 
 // Friends
-.controller('FriendsCtrl', function($scope, $ionicModal, Friends, Api) {
+.controller('FriendsCtrl', function($scope, $ionicModal, Friends) {
 	$scope.friends = Friends.all();
 	
 	$ionicModal.fromTemplateUrl('modal', {

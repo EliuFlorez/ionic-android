@@ -5,8 +5,14 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'starter.services'])
-
+angular.module('starter', [
+	'ionic', 
+	//'ionic.services.common',
+	//'ionic.service.deploy'
+	'ionic.utils', 
+	'starter.controllers', 
+	'starter.services'
+])
 .run(function($ionicPlatform, $rootScope, $state, $ionicLoading, $iStorage) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -20,12 +26,54 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 		}
 	});
 	
+	/*
+	// Identify app
+	$ionicAppProvider.identify({
+		// The App ID for the server
+		app_id: 'YOUR_APP_ID',
+		// The API key all services will use for this app
+		api_key: 'YOUR_CLIENT_API_KEY'
+	});
+	*/
+	
+	/*
+	// Check for updates
+	$ionicDeploy.check().then(function(response) {
+		// response will be true/false
+		if (response) {
+			// Download the updates
+			$ionicDeploy.download().then(function() {
+				// Extract the updates
+				$ionicDeploy.extract().then(function() {
+					// Load the updated version
+					$ionicTrack.load();
+				}, function(error) {
+					// Error extracting
+				}, function(progress) {
+					// Do something with the zip extraction progress
+					$scope.extraction_progress = progress;
+				});
+			}, function(error) {
+				// Error downloading the updates
+			}, function(progress) {
+				// Do something with the download progress
+				$scope.download_progress = progress;
+			});
+		}
+	} else {
+		// No updates, load the most up to date version of the app
+		$ionicDeploy.load();
+	}, function(error) {
+		// Error checking for updates
+	});
+	*/
+	
 	// on state change you want to check whether or not the state.
 	// I'm trying to reach is protected 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 		$ionicLoading.show({template: 'Loading...'});
 		
-		if (toState.authenticated === true && $localstorage.getObject('auth') !== null) {
+		if (toState.authenticated === true && $iStorage.getObject('auth') !== null) {
 			$rootScope.authenticate = true;
 		} else {
 			$rootScope.authenticate = false;
@@ -83,7 +131,7 @@ angular.module('starter', ['ionic', 'ionic.utils', 'starter.controllers', 'start
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
 	// http Error
-	$httpProvider.responseInterceptors.push("HttpErrorInterceptorModule");
+	//$httpProvider.responseInterceptors.push("HttpErrorInterceptorModule");
 	
 	// Ionic uses AngularUI Router which uses the concept of states
 	// Learn more here: https://github.com/angular-ui/ui-router
