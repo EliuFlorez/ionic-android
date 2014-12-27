@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('inomic.controllers', [])
 
 // Dashbaord
 .controller('DashCtrl', function($scope) {

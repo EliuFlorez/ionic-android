@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('inomic.services', [])
 
 /**
  * Service that returns some data.
