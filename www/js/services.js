@@ -37,7 +37,7 @@ angular.module('starter.services', [])
 		$http.defaults.headers.common['Authorization'] = auth.access_token;
 	}
 	
-	// HTTP FORM - POST
+	// HTTP FORM - POST - application/json or application/x-www-form-urlencoded
 	$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 	
 	// HTTP FORM - PUT / PATCH
@@ -47,29 +47,19 @@ angular.module('starter.services', [])
 	// HTTP Methods
 	return {
 		all: function(endpoint) {
-			return $http.get('http://hellosociets.com/api/' + endpoint, {
-				headers: {}
-			});
+			return $http.get('http://hellosociets.com/api/' + endpoint);
 		},
 		get: function(endpoint, id) {
-			return $http.get('http://hellosociets.com/api/' + endpoint + '/' + id, {
-				headers: {}
-			});
+			return $http.get('http://hellosociets.com/api/' + endpoint + '/' + id);
 		},
 		post: function(endpoint, data) {
-			return $http.post('http://hellosociets.com/api/' + endpoint, data, {
-				headers: {'Content-Type' : 'application/json'}
-			})
+			return $http.post('http://hellosociets.com/api/' + endpoint, data)
 		},
 		put: function(endpoint, id, data) {
-			return $http.put('http://hellosociets.com/api/' + endpoint + '/' + id, data, {
-				headers: {'Content-Type' : 'application/json'}
-			});
+			return $http.put('http://hellosociets.com/api/' + endpoint + '/' + id, data);
 		},
 		delete: function(endpoint, id) {
-			return $http.delete('http://hellosociets.com/api/' + endpoint + '/' + id, {
-				headers: {'Content-Type' : 'application/json'}
-			});
+			return $http.delete('http://hellosociets.com/api/' + endpoint + '/' + id);
 		}
 	}
 }]);

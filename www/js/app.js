@@ -7,13 +7,14 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', [
 	'ionic', 
-	//'ionic.services.common',
-	//'ionic.service.deploy'
+	'ionic.services.core',
+	'ionic.services.analytics',
+	'ionic.services.deploy',
 	'ionic.utils', 
 	'starter.controllers', 
 	'starter.services'
 ])
-.run(function($ionicPlatform, $rootScope, $state, $ionicLoading, $iStorage) {
+.run(function($ionicPlatform, $ionicTrack, $ionicDeploy, $rootScope, $state, $ionicLoading, $iStorage) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -26,17 +27,9 @@ angular.module('starter', [
 		}
 	});
 	
-	/*
-	// Identify app
-	$ionicAppProvider.identify({
-		// The App ID for the server
-		app_id: 'YOUR_APP_ID',
-		// The API key all services will use for this app
-		api_key: 'YOUR_CLIENT_API_KEY'
-	});
-	*/
+	// The run function is useful for sending events on app load
+	$ionicTrack.track('load', {'version': 1});
 	
-	/*
 	// Check for updates
 	$ionicDeploy.check().then(function(response) {
 		// response will be true/false
@@ -59,15 +52,13 @@ angular.module('starter', [
 				// Do something with the download progress
 				$scope.download_progress = progress;
 			});
+		} else {
+			$ionicDeploy.load();
 		}
-	} else {
-		// No updates, load the most up to date version of the app
-		$ionicDeploy.load();
 	}, function(error) {
 		// Error checking for updates
 	});
-	*/
-	
+
 	// on state change you want to check whether or not the state.
 	// I'm trying to reach is protected 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
@@ -128,10 +119,18 @@ angular.module('starter', [
 	};
 }])
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider, $ionicAppProvider) {
 
 	// http Error
 	//$httpProvider.responseInterceptors.push("HttpErrorInterceptorModule");
+	
+	// Identify app
+	$ionicAppProvider.identify({
+		// The App ID for the server
+		app_id: 'YOUR_APP_ID',
+		// The API key all services will use for this app
+		api_key: 'YOUR_CLIENT_API_KEY'
+	});
 	
 	// Ionic uses AngularUI Router which uses the concept of states
 	// Learn more here: https://github.com/angular-ui/ui-router
