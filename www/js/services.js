@@ -37,10 +37,8 @@ angular.module('starter.services', [])
 		$http.defaults.headers.common['Authorization'] = auth.access_token;
 	}
 	
-	// HTTP FORM - POST - application/json or application/x-www-form-urlencoded
-	$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-	
-	// HTTP FORM - PUT / PATCH
+	// HTTP FORM - application/json Or application/x-www-form-urlencoded
+	$http.defaults.headers.post['Content-Type'] = 'application/json';
 	$http.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
 	$http.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded';
 	

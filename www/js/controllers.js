@@ -12,10 +12,11 @@ angular.module('starter.controllers', [])
 	'$state',
 	'$ionicPopup', 
 	'$ionicLoading', 
+	'$ionicUser',
 	'$iStorage', 
 	'iApi', 
 	'iMessage',
-function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessage) {
+function($scope, $q, $state, $ionicPopup, $ionicLoading, $ionicUser, $iStorage, iApi, iMessage) {
 	
 	// Profile - Auth
 	$scope.profile = $iStorage.getObject('auth');
@@ -44,6 +45,16 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 			// Session Storage
 			$iStorage.setObject('auth', result.data.data);
 			
+			// User Auth
+			var auth = $iStorage.getObject('auth');
+			
+			// User Identification
+			$ionicUser.identify({
+				user_id: auth.id,
+				name: auth.name,
+				email: auth.email
+			});
+			
 			// Loading Hide
 			$ionicLoading.hide();
 			
@@ -61,6 +72,8 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 				if (error.data.message) { 
 					iMessage.alert('Error!', error.data.message);
 				}
+			} else if (typeof error.data.error === 'object') {
+				iMessage.alert('Error!', error.data.error.message);
 			}
 			
 			// Loading Hide
@@ -114,6 +127,8 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 				if (error.data.message) { 
 					iMessage.alert('Error!', error.data.message);
 				}
+			} else if (typeof error.data.error === 'object') {
+				iMessage.alert('Error!', error.data.error.message);
 			}
 			
 			// Loading Hide
@@ -161,6 +176,8 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 				if (error.data.message) { 
 					iMessage.alert('Error!', error.data.message);
 				}
+			} else if (typeof error.data.error === 'object') {
+				iMessage.alert('Error!', error.data.error.message);
 			}
 			
 			// Loading Hide
@@ -208,6 +225,8 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 				if (error.data.message) { 
 					iMessage.alert('Error!', error.data.message);
 				}
+			} else if (typeof error.data.error === 'object') {
+				iMessage.alert('Error!', error.data.error.message);
 			}
 			
 			// Loading Hide
@@ -258,6 +277,8 @@ function($scope, $q, $state, $ionicPopup, $ionicLoading, $iStorage, iApi, iMessa
 				if (error.data.message) { 
 					iMessage.alert('Error!', error.data.message);
 				}
+			} else if (typeof error.data.error === 'object') {
+				iMessage.alert('Error!', error.data.error.message);
 			}
 			
 			// Loading Hide
