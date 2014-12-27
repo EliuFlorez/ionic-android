@@ -1,5 +1,5 @@
-angular.module('inomic.incomes.controllers', [])
-.controller('IncomesCtrl', [
+angular.module('inomic.expenses.controllers', [])
+.controller('ExpensesCtrl', [
 	'$scope', 
 	'$q', 
 	'$state', 
@@ -16,13 +16,13 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
-		// Income - all
-		iApi.all('incomes').then(function (result) {
+		// Expense - all
+		iApi.all('expenses').then(function (result) {
 			// Loading Hide
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Response', result.data);
+			console.log('Expense - Response', result.data);
 			
 			// Resolve
 			q.resolve(result.data);
@@ -36,7 +36,7 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Error', error);
+			console.log('Expense - Error', error);
 			
 			// Reject
 			q.reject(error);
@@ -51,8 +51,8 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Defer
 		var q = $q.defer();
 		
-		// Incomes Data
-		var incomes = {
+		// Expenses Data
+		var expenses = {
 			balance: $scope.balance,
 			datetime: $scope.datetime
 		};
@@ -60,8 +60,8 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
-		// Income - post
-		iApi.post('incomes', incomes).then(function (result) {
+		// Expense - post
+		iApi.post('expenses', expenses).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', result.data.message);
@@ -71,13 +71,13 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Response', result.data);
+			console.log('Expense - Response', result.data);
 			
 			// Resolve
 			q.resolve(result);
 			
-			// State - Income
-			$state.go('app.incomes');
+			// State - Expense
+			$state.go('app.expenses');
 		}, function (error) {
 			// Error
 			if (error.data.success == false) {
@@ -92,7 +92,7 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Error', error);
+			console.log('Expense - Error', error);
 			
 			// Reject
 			q.reject(error);
@@ -110,19 +110,19 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
-		// Income - get
-		iApi.get('incomes/'+id).then(function (result) {
+		// Expense - get
+		iApi.get('expenses/'+id).then(function (result) {
 			// Loading Hide
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Response', result.data);
+			console.log('Expense - Response', result.data);
 			
 			// Resolve
 			q.resolve(result);
 			
-			// State - Income
-			$state.go('app.incomes');
+			// State - Expense
+			$state.go('app.expenses');
 		}, function (error) {
 			// Error
 			if (typeof error.data.error === 'object') {
@@ -133,7 +133,7 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Error', error);
+			console.log('Expense - Error', error);
 			
 			// Reject
 			q.reject(error);
@@ -148,8 +148,8 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Defer
 		var q = $q.defer();
 		
-		// Incomes Data
-		var incomes = {
+		// Expenses Data
+		var expenses = {
 			balance: $scope.balance,
 			datetime: $scope.datetime
 		};
@@ -157,8 +157,8 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
-		// Income - put/patch
-		iApi.put('incomes/'+id, incomes).then(function (result) {
+		// Expense - put/patch
+		iApi.put('expenses/'+id, expenses).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', result.data.message);
@@ -168,13 +168,13 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Response', result.data);
+			console.log('Expense - Response', result.data);
 			
 			// Resolve
 			q.resolve(result);
 			
-			// State - Income
-			$state.go('app.incomes');
+			// State - Expense
+			$state.go('app.expenses');
 		}, function (error) {
 			// Error
 			if (error.data.success == false) {
@@ -189,7 +189,7 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Error', error);
+			console.log('Expense - Error', error);
 			
 			// Reject
 			q.reject(error);
@@ -207,8 +207,8 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Loading Show
 		$ionicLoading.show({template: 'Loading...'});
 		
-		// Income - destroy
-		iApi.destroy('incomes/'+id).then(function (result) {
+		// Expense - destroy
+		iApi.destroy('expenses/'+id).then(function (result) {
 			// Success
 			if (result.data.success == true) {
 				iMessage.alert('Success!', result.data.message);
@@ -218,13 +218,13 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Response', result.data);
+			console.log('Expense - Response', result.data);
 			
 			// Resolve
 			q.resolve(result);
 			
-			// State - Income
-			$state.go('app.incomes');
+			// State - Expense
+			$state.go('app.expenses');
 		}, function (error) {
 			// Error
 			if (error.data.success == false) {
@@ -239,7 +239,7 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Income - Error', error);
+			console.log('Expense - Error', error);
 			
 			// Reject
 			q.reject(error);
