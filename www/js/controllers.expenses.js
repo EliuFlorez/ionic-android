@@ -1,12 +1,13 @@
-angular.module('inomic.expenses.controllers', [])
+angular.module('inomic.controllers.expenses', [])
 .controller('ExpensesCtrl', [
 	'$scope', 
 	'$q', 
-	'$state', 
+	'$state',
+	'$stateParams',
 	'$ionicLoading', 
 	'iApi', 
 	'iMessage',
-function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
+function($scope, $q, $state, $stateParams, $ionicLoading, iApi, iMessage) {
 	
 	// All
 	$scope.all = function() {
@@ -54,6 +55,8 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Expenses Data
 		var expenses = {
 			balance: $scope.balance,
+			category_id: $scope.category_id,
+			subcategory_id: $scope.subcategory_id,
 			datetime: $scope.datetime
 		};
 		
@@ -151,6 +154,8 @@ function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
 		// Expenses Data
 		var expenses = {
 			balance: $scope.balance,
+			category_id: $scope.category_id,
+			subcategory_id: $scope.subcategory_id,
 			datetime: $scope.datetime
 		};
 		

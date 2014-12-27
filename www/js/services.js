@@ -56,7 +56,7 @@ angular.module('inomic.services', [])
 		put: function(endpoint, id, data) {
 			return $http.put('http://hellosociets.com/api/' + endpoint + '/' + id, data);
 		},
-		delete: function(endpoint, id) {
+		destroy: function(endpoint, id) {
 			return $http.delete('http://hellosociets.com/api/' + endpoint + '/' + id);
 		}
 	}

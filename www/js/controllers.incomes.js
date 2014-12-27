@@ -1,12 +1,13 @@
-angular.module('inomic.incomes.controllers', [])
+angular.module('inomic.controllers.incomes', [])
 .controller('IncomesCtrl', [
 	'$scope', 
 	'$q', 
 	'$state', 
+	'$stateParams',
 	'$ionicLoading', 
 	'iApi', 
 	'iMessage',
-function($scope, $q, $state, $ionicLoading, iApi, iMessage) {
+function($scope, $q, $state, $stateParams, $ionicLoading, iApi, iMessage) {
 	
 	// All
 	$scope.all = function() {

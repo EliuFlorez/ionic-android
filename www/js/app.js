@@ -12,6 +12,8 @@ angular.module('inomic', [
 	'ionic.services.deploy',
 	'ionic.utils', 
 	'inomic.controllers', 
+	'inomic.controllers.incomes', 
+	'inomic.controllers.expenses', 
 	'inomic.services'
 ])
 .run(function($ionicPlatform, $ionicTrack, $ionicDeploy, $rootScope, $state, $ionicLoading, $iStorage) {
@@ -88,7 +90,7 @@ angular.module('inomic', [
 })
 
 // Http Interceptor
-.factory("HttpErrorInterceptorModule", ["$q", "$rootScope", "$location", function($q, $rootScope, $location) {
+.factory('HttpErrorInterceptorModule', ['$q', '$rootScope', '$state', function($q, $rootScope, $state) {
 	var success = function(response) {
 		// pass through
 		console.log('success in interceptor');
@@ -107,8 +109,8 @@ angular.module('inomic', [
 				status: false, 
 				description: 'Authentication required!'
 			};
-			console.log("Response Error 401", response);
-			$location.path('/login').search('returnTo', $location.path());
+			console.log('Response Error 401', response);
+			$state.transitionTo('signin');
 			return response;
 		}
 		return $q.reject(response);
@@ -122,7 +124,7 @@ angular.module('inomic', [
 .config(function($stateProvider, $urlRouterProvider, $httpProvider, $ionicAppProvider) {
 
 	// http Error
-	//$httpProvider.responseInterceptors.push("HttpErrorInterceptorModule");
+	//$httpProvider.responseInterceptors.push('HttpErrorInterceptorModule');
 	
 	// Identify app
 	$ionicAppProvider.identify({
@@ -185,6 +187,50 @@ angular.module('inomic', [
 			'app-home': {
 				templateUrl: 'templates/app-home.html',
 				controller: 'DashCtrl'
+			}
+		},
+		authenticated: true
+	})
+	
+	// Incomes
+	.state('app.incomes', {
+		url: '/incomes',
+		views: {
+			'app-incomes': {
+				templateUrl: 'templates/incomes/index.html',
+				controller: 'IncomesCtrl'
+			}
+		},
+		authenticated: true
+	})
+	.state('app.income-show', {
+		url: '/income/:id',
+		views: {
+			'app-incomes': {
+				templateUrl: 'templates/incomes/show.html',
+				controller: 'IncomesCtrl'
+			}
+		},
+		authenticated: true
+	})
+	
+	// Expenses
+	.state('app.expenses', {
+		url: '/expenses',
+		views: {
+			'app-expenses': {
+				templateUrl: 'templates/expenses/index.html',
+				controller: 'ExpensesCtrl'
+			}
+		},
+		authenticated: true
+	})
+	.state('app.expense-show', {
+		url: '/expense/:id',
+		views: {
+			'app-expenses': {
+				templateUrl: 'templates/expenses/show.html',
+				controller: 'ExpensesCtrl'
 			}
 		},
 		authenticated: true
