@@ -13,6 +13,10 @@ angular.module('inomic', [
 	'ionic.utils', 
 	'inomic.controllers', 
 	'inomic.controllers.users', 
+	'inomic.controllers.accounts', 
+	'inomic.controllers.contacts', 
+	'inomic.controllers.credits', 
+	'inomic.controllers.payments', 
 	'inomic.controllers.incomes', 
 	'inomic.controllers.expenses', 
 	'inomic.services'
