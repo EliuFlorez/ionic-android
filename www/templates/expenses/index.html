@@ -1,8 +1,8 @@
 <ion-view title="Expenses">
 	<ion-content ng-controller="ExpensesCtrl">
 		<ion-list>
-			<ion-item ng-repeat="expense in all()" type="item-text-wrap" href="#/app/expenses/{{expense.id}}">
-				{{expense.balance}}
+			<ion-item ng-repeat="expense in all" type="item-text-wrap" href="#/app/expenses/{{expense.id}}">
+				<span>{{expense.balance}}</span>
 			</ion-item>
 		</ion-list>
 	</ion-content>

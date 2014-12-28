@@ -12,6 +12,7 @@ angular.module('inomic', [
 	'ionic.services.deploy',
 	'ionic.utils', 
 	'inomic.controllers', 
+	'inomic.controllers.users', 
 	'inomic.controllers.incomes', 
 	'inomic.controllers.expenses', 
 	'inomic.services'
@@ -60,17 +61,17 @@ angular.module('inomic', [
 	}, function(error) {
 		// Error checking for updates
 	});
-
+	
 	// on state change you want to check whether or not the state.
 	// I'm trying to reach is protected 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 		$ionicLoading.show({template: 'Loading...'});
 		
-		if (toState.authenticated === true && $iStorage.getObject('auth') !== null) {
-			$rootScope.authenticate = true;
-		} else {
+		if (toState.authenticated === true && $iStorage.getObject('auth') === null) {
 			$rootScope.authenticate = false;
-			//$state.transitionTo('signin');
+			$state.transitionTo('signin');
+		} else {
+			$rootScope.authenticate = toState.authenticated;
 		}
 		
 		console.log('-- authenticated success: '+$rootScope.authenticate+' --', $iStorage.getObject('auth'));
@@ -81,16 +82,18 @@ angular.module('inomic', [
 		event.preventDefault();
 	});
 	
-	$rootScope.$on('$routeChangeError', function(event, toState, toParams, fromState, fromParams) {
-        if (toState.authenticated === false) {
+	$rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
+        if (toState.authenticated === true) {
+			$ionicLoading.hide();
             $state.transitionTo('signin');
+			event.preventDefault();
         }
     });
 	
 })
 
 // Http Interceptor
-.factory('HttpErrorInterceptorModule', ['$q', '$rootScope', '$state', function($q, $rootScope, $state) {
+.factory('HttpErrorInterceptorModule', ['$q', '$rootScope', '$location', function($q, $rootScope, $location) {
 	var success = function(response) {
 		// pass through
 		console.log('success in interceptor');
@@ -110,7 +113,6 @@ angular.module('inomic', [
 				description: 'Authentication required!'
 			};
 			console.log('Response Error 401', response);
-			$state.transitionTo('signin');
 			return response;
 		}
 		return $q.reject(response);
@@ -124,7 +126,7 @@ angular.module('inomic', [
 .config(function($stateProvider, $urlRouterProvider, $httpProvider, $ionicAppProvider) {
 
 	// http Error
-	//$httpProvider.responseInterceptors.push('HttpErrorInterceptorModule');
+	$httpProvider.interceptors.push('HttpErrorInterceptorModule');
 	
 	// Identify app
 	$ionicAppProvider.identify({
@@ -196,14 +198,14 @@ angular.module('inomic', [
 	.state('app.incomes', {
 		url: '/incomes',
 		views: {
-			'app-incomes': {
+			all: {
 				templateUrl: 'templates/incomes/index.html',
 				controller: 'IncomesCtrl'
 			}
 		},
 		authenticated: true
 	})
-	.state('app.income-show', {
+	.state('app.income.show', {
 		url: '/income/:id',
 		views: {
 			'app-incomes': {
@@ -218,14 +220,14 @@ angular.module('inomic', [
 	.state('app.expenses', {
 		url: '/expenses',
 		views: {
-			'app-expenses': {
+			all: {
 				templateUrl: 'templates/expenses/index.html',
 				controller: 'ExpensesCtrl'
 			}
 		},
 		authenticated: true
 	})
-	.state('app.expense-show', {
+	.state('app.expense.show', {
 		url: '/expense/:id',
 		views: {
 			'app-expenses': {
