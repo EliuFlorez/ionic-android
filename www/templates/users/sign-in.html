@@ -1,18 +1,20 @@
-<ion-view view-title="Sign-In" title="SignIn">
-	<ion-content ng-controller="UsersCtrl">
-		<div class="list">
-			<label class="item item-input">
-				<span class="input-label">Email</span>
-				<input type="email" ng-model="email">
-			</label>
-			<label class="item item-input">
-				<span class="input-label">Password</span>
-				<input type="password" ng-model="password">
-			</label>
-		</div>
-		<div class="padding">
-			<button class="button button-block button-positive" ng-click="signIn()">Sign-In</button>
-			<p class="text-center"><a href="#/password/remind">Forgot password</a></p>
-		</div>
-	</ion-content>
+<ion-view view-title="SignIn" title="SignIn">
+    <ion-content ng-controller="UsersCtrl" padding="true" class="has-header">
+        <form>
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="email" ng-model="email" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" ng-model="password" placeholder="">
+                </label>
+            </ion-list>
+            <div class="spacer" style="height:20px;"></div>
+            <button class="button button-positive button-block" ng-click="signIn()">SignIn</button>
+            <a href="#/sign-up" class="button button-stable button-block">Or create an account</a>
+            <a href="#/password/remind" class="button button-positive button-clear button-block">Forgot password?</a>
+        </form>
+    </ion-content>
 </ion-view>

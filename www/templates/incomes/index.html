@@ -1,7 +1,7 @@
 <ion-view title="Incomes">
 	<ion-content ng-controller="IncomesCtrl">
 		<ion-list>
-			<ion-item ng-repeat="income in all" type="item-text-wrap" href="#/app/incomes/{{income.id}}">
+			<ion-item ng-repeat="income in all()" type="item-text-wrap" href="#/app/incomes/{{income.id}}">
 				<span>{{income.balance}}</span>
 			</ion-item>
 		</ion-list>
