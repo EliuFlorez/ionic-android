@@ -9,43 +9,35 @@ angular.module('inomic.controllers.accounts', [])
 	'iMessage',
 function($scope, $q, $state, $stateParams, $ionicLoading, iApi, iMessage) {
 	
-	// All
-	$scope.all = function() {
-		// Defer
-		var q = $q.defer();
+	// Loading Show
+	$ionicLoading.show({template: 'Loading...'});
+	
+	// Account - all
+	iApi.all('accounts').then(function (result) {
+		// Loading Hide
+		$ionicLoading.hide();
 		
-		// Loading Show
-		$ionicLoading.show({template: 'Loading...'});
+		// Console Log
+		console.log('Account - Response', result.data.data);
 		
-		// Account - all
-		iApi.all('accounts').then(function (result) {
-			// Loading Hide
-			$ionicLoading.hide();
-			
-			// Console Log
-			console.log('Account - Response', result.data);
-			
-			// Resolve
-			q.resolve(result.data);
-		}, function (error) {
-			// Error
-			if (typeof error.data.error === 'object') {
-				iMessage.alert('Error!', error.data.error.message);
+		// Accounts All
+		$scope.accounts = result.data.data;
+	}, function (error) {
+		// Error
+		if (error.data.success == false) {
+			if (error.data.message) {
+				iMessage.alert('Error!', error.data.message);
 			}
-			
-			// Loading Hide
-			$ionicLoading.hide();
-			
-			// Console Log
-			console.log('Account - Error', error);
-			
-			// Reject
-			q.reject(error);
-		});
+		} else if (typeof error.data.error === 'object') {
+			iMessage.alert('Error!', error.data.error.message);
+		}
 		
-		// Promise
-		return q.promise;
-	};
+		// Loading Hide
+		$ionicLoading.hide();
+		
+		// Accounts Null
+		$scope.accounts = [];
+	});
 	
 	// Create
 	$scope.create = function() {
@@ -130,7 +122,11 @@ function($scope, $q, $state, $stateParams, $ionicLoading, iApi, iMessage) {
 			$state.go('app.accounts');
 		}, function (error) {
 			// Error
-			if (typeof error.data.error === 'object') {
+			if (error.data.success == false) {
+				if (error.data.message) { 
+					iMessage.alert('Error!', error.data.message);
+				}
+			} else if (typeof error.data.error === 'object') {
 				iMessage.alert('Error!', error.data.error.message);
 			}
 			

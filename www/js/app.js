@@ -71,11 +71,15 @@ angular.module('inomic', [
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 		$ionicLoading.show({template: 'Loading...'});
 		
-		if (toState.authenticated === true && $iStorage.getObject('auth') === null) {
-			$rootScope.authenticate = false;
-			$state.transitionTo('signin');
+		if (toState.authenticated === true) {
+			if ($iStorage.getObject('auth') !== null) {
+				$rootScope.authenticate = true;
+			} else {
+				$rootScope.authenticate = false;
+				$state.transitionTo('signin');
+			}
 		} else {
-			$rootScope.authenticate = toState.authenticated;
+			$rootScope.authenticate = false;
 		}
 		
 		console.log('-- authenticated success: '+$rootScope.authenticate+' --', $iStorage.getObject('auth'));
@@ -199,64 +203,22 @@ angular.module('inomic', [
 	})
 	
 	// Incomes
-	.state('app.incomes', {
+	.state('app.incoms', {
 		url: '/incomes',
 		views: {
-			all: {
+			'app-incomes': {
 				templateUrl: 'templates/incomes/index.html',
 				controller: 'IncomesCtrl'
 			}
 		},
 		authenticated: true
 	})
-	.state('app.income.show', {
+	.state('app.income-show', {
 		url: '/income/:id',
 		views: {
-			'app-incomes': {
+			'app-incomes-show': {
 				templateUrl: 'templates/incomes/show.html',
 				controller: 'IncomesCtrl'
-			}
-		},
-		authenticated: true
-	})
-	
-	// Expenses
-	.state('app.expenses', {
-		url: '/expenses',
-		views: {
-			all: {
-				templateUrl: 'templates/expenses/index.html',
-				controller: 'ExpensesCtrl'
-			}
-		},
-		authenticated: true
-	})
-	.state('app.expense.show', {
-		url: '/expense/:id',
-		views: {
-			'app-expenses': {
-				templateUrl: 'templates/expenses/show.html',
-				controller: 'ExpensesCtrl'
-			}
-		},
-		authenticated: true
-	})
-	.state('app.friends', {
-		url: '/friends',
-		views: {
-			'app-friends': {
-				templateUrl: 'templates/app-friends.html',
-				controller: 'FriendsCtrl'
-			}
-		},
-		authenticated: true
-	})
-	.state('app.friend-detail', {
-		url: '/friend/:friendId',
-		views: {
-			'app-friends': {
-				templateUrl: 'templates/friend-detail.html',
-				controller: 'FriendDetailCtrl'
 			}
 		},
 		authenticated: true
@@ -270,14 +232,6 @@ angular.module('inomic', [
 			}
 		},
 		authenticated: true
-	})
-	.state('app.logout', {
-		url: '/logout',
-		views: {
-			'app-logout': {
-				controller: 'UsersCtrl'
-			}
-		}
 	});
 
 	// if none of the above states are matched, use this as the fallback
