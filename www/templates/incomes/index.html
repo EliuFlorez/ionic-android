@@ -13,7 +13,9 @@
 		<form>
 		<ion-list>
 			<ion-item ng-repeat="income in incomes" type="item-text-wrap" href="#/app/income/{{income.id}}">
-				{{income.balance}}
+				<b>Balance:</b> <span>{{income.balance}}</span> -
+				<b>Date:</b> <span>{{income.datetime}}</span> - 
+				<b>Description:</b> <span>{{income.description}}</span>
 			</ion-item>
 		</ion-list>
 	</ion-content>

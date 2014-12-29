@@ -3,20 +3,11 @@ angular.module('inomic.services', [])
 /**
  * Service that returns some data.
  */
-.factory('iApi', ['$http', '$iStorage', function($http, $iStorage) {
-	
-	// User Auth
-	var auth = $iStorage.getObject('auth');
-	
-	// HTTP Headers Auth
-	if (auth) {
-		$http.defaults.headers.common['Authorization'] = auth.access_token;
-	}
+.factory('iApi', ['$http', function($http) {
 	
 	// HTTP FORM - application/json Or application/x-www-form-urlencoded
 	$http.defaults.headers.post['Content-Type'] = 'application/json';
 	$http.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
-	$http.defaults.headers.patch['Content-Type'] = 'application/x-www-form-urlencoded';
 	
 	// HTTP Methods
 	return {
@@ -53,11 +44,7 @@ angular.module('ionic.utils', []).factory('$iStorage', ['$window', function($win
 			$window.localStorage[key] = JSON.stringify(value);
 		},
 		getObject: function(key) {
-			if (typeof $window.localStorage[key] !== 'undefined') {
-				return JSON.parse($window.localStorage[key]);
-			} else {
-				return null;
-			}
+			return JSON.parse($window.localStorage[key] || '{}');
 		},
 		clear : function() {
 			$window.localStorage.clear();

@@ -53,7 +53,7 @@ function($scope, $q, $state, $ionicLoading, $ionicUser, $iStorage, iApi, iMessag
 			$ionicLoading.hide();
 			
 			// Console Log
-			console.log('Sign-In - Response', $iStorage.getObject('auth'));
+			console.log('Sign-In - Response', auth);
 			
 			// Resolve
 			q.resolve(result);
@@ -295,7 +295,7 @@ function($scope, $q, $state, $ionicLoading, $ionicUser, $iStorage, iApi, iMessag
 		$ionicLoading.show({template: 'Loading...'});
 		
 		// Session Destroy
-		$iStorage.setObject('auth', null);
+		$iStorage.clear();
 		
 		// Loading Hide
 		$ionicLoading.hide();

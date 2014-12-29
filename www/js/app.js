@@ -21,7 +21,7 @@ angular.module('inomic', [
 	'inomic.controllers.expenses', 
 	'inomic.services'
 ])
-.run(function($ionicPlatform, $ionicTrack, $ionicDeploy, $rootScope, $state, $ionicLoading, $iStorage) {
+.run(function($ionicPlatform, $ionicTrack, $ionicDeploy, $rootScope, $state, $ionicLoading, $http, $iStorage) {
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -71,9 +71,15 @@ angular.module('inomic', [
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 		$ionicLoading.show({template: 'Loading...'});
 		
+		// User Auth
+		var auth = $iStorage.getObject('auth');
+		
+		// Authenticated True / False
 		if (toState.authenticated === true) {
-			if ($iStorage.getObject('auth') !== null) {
+			if (auth.length > 0) {
 				$rootScope.authenticate = true;
+				$http.defaults.headers.common['Authorization'] = auth.access_token;
+				console.log('-- authenticated token: '+auth.access_token);
 			} else {
 				$rootScope.authenticate = false;
 				$state.transitionTo('signin');
@@ -82,7 +88,7 @@ angular.module('inomic', [
 			$rootScope.authenticate = false;
 		}
 		
-		console.log('-- authenticated success: '+$rootScope.authenticate+' --', $iStorage.getObject('auth'));
+		console.log('-- authenticated success: '+$rootScope.authenticate+' --', auth);
 	});
 	
 	$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
@@ -203,7 +209,7 @@ angular.module('inomic', [
 	})
 	
 	// Incomes
-	.state('app.incoms', {
+	.state('app.incomes', {
 		url: '/incomes',
 		views: {
 			'app-incomes': {
