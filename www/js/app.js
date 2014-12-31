@@ -76,7 +76,7 @@ angular.module('inomic', [
 		
 		// Authenticated True / False
 		if (toState.authenticated === true) {
-			if (auth.length > 0) {
+			if (Object.keys(auth).length > 0) {
 				$rootScope.authenticate = true;
 				$http.defaults.headers.common['Authorization'] = auth.access_token;
 				console.log('-- authenticated token: '+auth.access_token);

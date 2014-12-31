@@ -195,7 +195,7 @@ function($scope, $q, $state, $ionicLoading, $ionicUser, $iStorage, iApi, iMessag
 		
 		// Users Data
 		var users = {
-			email: $scope.mail
+			email: $scope.email
 		};
 		
 		// Loading Show
